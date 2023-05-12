@@ -1,0 +1,2 @@
+lleno
+vacio
