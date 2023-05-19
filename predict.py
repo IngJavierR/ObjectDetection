@@ -4,10 +4,9 @@
 # 3. pass the image to network and do inference
 # (4. if inference speed is too slow for you, try to make w' x h' smaller, which is defined with DEFAULT_INPUT_SIZE (in object_detection.py or ObjectDetection.cs))
 """Sample prediction script for TensorFlow 2.x."""
-import sys
 import tensorflow as tf
 import numpy as np
-from PIL import Image
+import cv2
 from object_detection import ObjectDetection
 
 MODEL_FILENAME = 'model.pb'
@@ -30,9 +29,8 @@ class TFObjectDetection(ObjectDetection):
             self.input_shape = sess.graph.get_tensor_by_name(self.INPUT_TENSOR_NAME).shape.as_list()[1:3]
 
     def predict(self, preprocessed_image):
-        # inputs = np.array(preprocessed_image, dtype=np.float)[:, :, (2, 1, 0)]  # RGB -> BGR
-
-        image = preprocessed_image.resize(self.input_shape)
+        
+        image = cv2.resize(preprocessed_image, self.input_shape)
         inputs = np.array(image, dtype=np.float32)[np.newaxis, :, :, :]
         with tf.compat.v1.Session(graph=self.graph) as sess:
             output_tensors = [sess.graph.get_tensor_by_name(n) for n in self.OUTPUT_TENSOR_NAMES]
@@ -52,5 +50,5 @@ def detect_image(image_filename):
 
     od_model = TFObjectDetection(graph_def, labels)
 
-    image = Image.open(image_filename)
-    return od_model.predict_image(image)
+    # image = Image.open(image_filename)
+    return od_model.predict_image(image_filename)

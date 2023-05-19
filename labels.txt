@@ -1,2 +1,6 @@
-lleno
-vacio
+cafe
+jugo
+lataverduras
+leche
+papas
+refresco

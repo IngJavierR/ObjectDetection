@@ -145,8 +145,8 @@ class ObjectDetection(object):
         return image
 
     def predict_image(self, image):
-        inputs = self.preprocess(image)
-        prediction_outputs = self.predict(inputs)
+        # inputs = self.preprocess(image)
+        prediction_outputs = self.predict(image)
         return self.postprocess(prediction_outputs)
 
     def preprocess(self, image):
