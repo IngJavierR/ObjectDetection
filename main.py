@@ -1,8 +1,8 @@
 import cv2
 from predict import detect_image
 
-img_width = 480
-img_height = 320
+img_width = 800
+img_height = 600
 
 # Open the camera
 camera = cv2.VideoCapture(0)
@@ -25,15 +25,15 @@ while (camera.isOpened()):
     }
     price = {
         "cafe": 15,
-        "jugo": 20,
+        "jugo": 10,
         "lataverduras": 25,
         "leche":35,
-        "papas":20,
+        "papas":5,
         "refresco":30,
     }
 
+    suma = 0
     for prediction in results:
-        suma = 0
         if prediction['probability'] > 0.3:
             # print(f"{prediction['tagName']}: {prediction['probability'] * 100 :.2f}%")
             suma = suma + price[prediction['tagName']]
@@ -45,7 +45,7 @@ while (camera.isOpened()):
             cv2.rectangle(resized_image, (int(left), int(top)), (int(left + width), int(top + height)), color, 3)
             # cv2.putText(resized_image, f"{prediction['tagName']}: {prediction['probability'] * 100 :.2f}%", (int(left), int(top)-10), fontFace = cv2.FONT_HERSHEY_SIMPLEX, fontScale = 0.5, color = color, thickness = 2)
             cv2.putText(resized_image, f"{prediction['tagName']}: {price[prediction['tagName']] :.2f}$", (int(left), int(top)-10), fontFace = cv2.FONT_HERSHEY_SIMPLEX, fontScale = 0.5, color = color, thickness = 2)
-        cv2.putText(resized_image, "{}: {}".format("Total", suma), (20, 20), fontFace = cv2.FONT_HERSHEY_SIMPLEX, fontScale = 0.5, color = (0,215,255), thickness = 2)
+        cv2.putText(resized_image, "{}: {}$".format("Total", suma), (20, 20), fontFace = cv2.FONT_HERSHEY_SIMPLEX, fontScale = 0.9, color = (0,215,255), thickness = 2)
 
     # Display the frame
     cv2.imshow("Frame", resized_image)
